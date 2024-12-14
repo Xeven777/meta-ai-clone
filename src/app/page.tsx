@@ -24,7 +24,9 @@ export default function Chat() {
     handleSubmit,
     isLoading,
     append,
-  } = useChat();
+  } = useChat({
+    maxSteps: 4,
+  });
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -32,8 +34,10 @@ export default function Chat() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const audioChunks = useRef<Blob[]>([]); // Store audio chunks
-
+  const audioChunks = useRef<Blob[]>([]);
+  useEffect(() => {
+    console.log("messages", messages);
+  }, [messages]);
   useEffect(() => {
     if (recording) {
       startRecording();
@@ -65,7 +69,7 @@ export default function Chat() {
           return prevTime + 1;
         });
       }, 1000);
-      audioChunks.current = []; // Reset audio chunks
+      audioChunks.current = [];
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -84,7 +88,7 @@ export default function Chat() {
 
   const handleDataAvailable = (event: BlobEvent) => {
     if (event.data.size > 0) {
-      audioChunks.current.push(event.data); // Collect audio chunks
+      audioChunks.current.push(event.data);
     }
   };
 
@@ -277,62 +281,65 @@ export default function Chat() {
           )}
         </AnimatePresence>
 
-        {messages.map((message, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className={cn(
-              "flex gap-2 max-w-xl",
-              message.role === "user" ? "w-fit ml-auto" : ""
-            )}
-          >
-            {message.role !== "user" && (
-              <Image
-                src={meta}
-                alt="meta ai logo"
-                width={30}
-                className="logo-shadow size-7"
-              />
-            )}
-            <div
-              className={cn(
-                "rounded-2xl px-5 py-3 prose",
-                message.role === "user"
-                  ? "bg-green-600 rounded-tr-none text-end"
-                  : "bg-gray-800 rounded-tl-none"
-              )}
-            >
-              <Markdown>{message.content}</Markdown>
-              <p
+        {messages.map(
+          (message, i) =>
+            message.content !== "" && (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
                 className={cn(
-                  "text-xs mt-2",
-                  message.role === "user"
-                    ? "text-gray-300 ml-auto text-end w-full"
-                    : "text-gray-500"
+                  "flex gap-2 max-w-xl",
+                  message.role === "user" ? "w-fit ml-auto" : ""
                 )}
               >
-                {new Date().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
-              {isLoading &&
-                i === messages.length - 1 &&
-                message.role !== "user" && (
-                  <div className="flex items-center space-x-1 my-1">
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400"></div>
-                  </div>
+                {message.role !== "user" && (
+                  <Image
+                    src={meta}
+                    alt="meta ai logo"
+                    width={30}
+                    className="logo-shadow size-7"
+                  />
                 )}
-            </div>
-            {message.role === "user" && (
-              <div className="size-7 bg-gradient-to-br to-green-600 from-cyan-500 via-emerald-500 rounded-full" />
-            )}
-          </motion.div>
-        ))}
+                <div
+                  className={cn(
+                    "rounded-2xl px-5 py-3 prose",
+                    message.role === "user"
+                      ? "bg-green-600 rounded-tr-none text-end"
+                      : "bg-gray-800 rounded-tl-none"
+                  )}
+                >
+                  <Markdown>{message.content}</Markdown>
+                  <p
+                    className={cn(
+                      "text-xs mt-2",
+                      message.role === "user"
+                        ? "text-gray-300 ml-auto text-end w-full"
+                        : "text-gray-500"
+                    )}
+                  >
+                    {new Date().toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                  {isLoading &&
+                    i === messages.length - 1 &&
+                    message.role !== "user" && (
+                      <div className="flex items-center space-x-1 my-1">
+                        <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
+                        <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
+                        <div className="size-2 animate-bounce rounded-full bg-gray-400"></div>
+                      </div>
+                    )}
+                </div>
+                {message.role === "user" && (
+                  <div className="size-7 bg-gradient-to-br to-green-600 from-cyan-500 via-emerald-500 rounded-full" />
+                )}
+              </motion.div>
+            )
+        )}
       </div>
 
       {/* Recording animation */}
@@ -422,7 +429,10 @@ export default function Chat() {
           ) : (
             <Button
               type="button"
-              className="rounded-full bg-green-500 hover:bg-green-600 size-12 shrink-0"
+              className={cn(
+                "rounded-full bg-green-500 hover:bg-green-600 size-12 shrink-0",
+                recording && "bg-gray-700 hover:bg-gray-800"
+              )}
               onClick={() => setRecording(!recording)}
               disabled={audioBlob !== null}
             >
