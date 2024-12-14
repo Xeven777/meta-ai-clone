@@ -190,7 +190,7 @@ export default function Chat() {
               </div>
 
               <div
-                className="relative overflow-clip w-full pb-6 mt-6 flex flex-col gap-4"
+                className="relative overflow-scroll w-full pb-6 mt-6 flex flex-col gap-4"
                 style={{
                   maskImage:
                     "linear-gradient(to left, transparent 0%, black 5%, black 95%, transparent 100%)",
