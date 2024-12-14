@@ -32,6 +32,7 @@ export default function Chat() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const audioChunks = useRef<Blob[]>([]); // Store audio chunks
 
   useEffect(() => {
     if (recording) {
@@ -52,6 +53,7 @@ export default function Chat() {
         "dataavailable",
         handleDataAvailable
       );
+      mediaRecorderRef.current.addEventListener("stop", handleStop);
       mediaRecorderRef.current.start();
       setRecordingTime(0);
       timerRef.current = setInterval(() => {
@@ -63,6 +65,7 @@ export default function Chat() {
           return prevTime + 1;
         });
       }, 1000);
+      audioChunks.current = []; // Reset audio chunks
     } catch (error) {
       console.error("Error accessing microphone:", error);
     }
@@ -81,7 +84,14 @@ export default function Chat() {
 
   const handleDataAvailable = (event: BlobEvent) => {
     if (event.data.size > 0) {
-      setAudioBlob(event.data);
+      audioChunks.current.push(event.data); // Collect audio chunks
+    }
+  };
+
+  const handleStop = () => {
+    if (audioChunks.current.length > 0) {
+      const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
+      setAudioBlob(audioBlob);
     }
   };
 
@@ -114,6 +124,7 @@ export default function Chat() {
     // Reset audio blob and recording time
     setAudioBlob(null);
     setRecordingTime(0);
+    audioChunks.current = []; // Reset audio chunks
   };
 
   const togglePlayPause = () => {
@@ -131,6 +142,7 @@ export default function Chat() {
     stopRecording();
     setAudioBlob(null);
     setRecordingTime(0);
+    audioChunks.current = []; // Reset audio chunks
   };
 
   return (
@@ -365,6 +377,10 @@ export default function Chat() {
                 ref={audioRef}
                 src={URL.createObjectURL(audioBlob)}
                 onEnded={() => setIsPlaying(false)}
+                onError={(e) => {
+                  console.error("Audio playback error:", e);
+                  setIsPlaying(false);
+                }}
               />
             </div>
             <div className="flex gap-2">
@@ -393,7 +409,7 @@ export default function Chat() {
             placeholder="Message"
             minHeight={38}
             maxHeight={100}
-            className="rounded-3xl pl-5 resize-none"
+            className="rounded-3xl pl-5 resize-none bg-gray-800/90"
           />
           {input.length > 0 ? (
             <Button
