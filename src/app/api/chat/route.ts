@@ -1,28 +1,24 @@
-import { OpenAIStream, StreamingTextResponse } from "ai";
-import { openai } from "@ai-sdk/openai";
-
-export const runtime = "nodejs";
+import { CoreMessage, streamText } from "ai";
+import { groq } from "@ai-sdk/groq";
 
 export async function POST(req: Request) {
-  const { messages, audioBlob } = await req.json();
+  // const { messages, audioBlob } = await req.json();
 
-  let userMessage = messages[messages.length - 1].content;
+  const { messages }: { messages: CoreMessage[] } = await req.json();
 
-  if (audioBlob) {
-    // In a real implementation, you would process the audio blob here
-    // For now, we'll just use a dummy transcription
-    userMessage = "This is a dummy transcription of the voice message.";
-  }
+  // let userMessage = messages[messages.length - 1].content;
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4",
-    stream: true,
-    messages: [
-      ...messages.slice(0, -1),
-      { role: "user", content: userMessage },
-    ],
+  // if (audioBlob) {
+  //   // In a real implementation, you would process the audio blob here
+  //   // For now, we'll just use a dummy transcription
+  //   userMessage = "This is a dummy transcription of the voice message.";
+  // }
+
+  const result = streamText({
+    model: groq("llama-3.3-70b-versatile"),
+    system: "You are a helpful assistant.",
+    messages,
   });
 
-  const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+  return result.toDataStreamResponse();
 }

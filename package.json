@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^1.0.8",
     "@radix-ui/react-slot": "^1.1.1",
     "ai": "^4.0.18",
     "class-variance-authority": "^0.7.1",

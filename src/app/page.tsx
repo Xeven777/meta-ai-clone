@@ -13,6 +13,7 @@ import {
 } from "@/lib/prompts";
 import Image from "next/image";
 import meta from "@/assets/Meta-ai-logo.png";
+
 export default function Chat() {
   const {
     messages,
