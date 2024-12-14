@@ -1,0 +1,17 @@
+export const suggestions = [
+  { emoji: "👴", text: "Retirement savings guide" },
+  { emoji: "💡", text: "5 energy-saving tips" },
+  { emoji: "📱", text: "Tech gadget wishlist" },
+  { emoji: "🕺", text: "Let's play 90s trivia" },
+  { emoji: "💃", text: "Online dance classes" },
+  { emoji: "🍳", text: "Quick and easy recipes" },
+  { emoji: "🌿", text: "Sustainable living tips" },
+  { emoji: "📚", text: "Book recommendations" },
+  { emoji: "🧘", text: "Beginner's guide to meditation" },
+  { emoji: "🎨", text: "DIY home decor ideas" },
+  { emoji: "🐕", text: "Dog training techniques" },
+  { emoji: "💼", text: "Career development advice" },
+  { emoji: "🌎", text: "Eco-friendly travel tips" },
+  { emoji: "🧠", text: "Memory improvement exercises" },
+  { emoji: "🎸", text: "Learn a musical instrument" },
+];
