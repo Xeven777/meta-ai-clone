@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { suggestions } from "@/lib/prompts";
+import {
+  additionalSuggestions,
+  creativeSuggestions,
+  suggestions,
+} from "@/lib/prompts";
 import Image from "next/image";
 import meta from "@/assets/Meta-ai-logo.png";
 export default function Chat() {
@@ -86,7 +90,11 @@ export default function Chat() {
       "This is a dummy transcription of the voice message.";
 
     // Append user's voice message
-    const userMessage: Message = { role: "user", content: "[Voice Message]" };
+    const userMessage: Message = {
+      role: "user",
+      content: "[Voice Message]",
+      id: Date.now().toString(),
+    };
     append(userMessage);
 
     // Simulate API delay
@@ -96,6 +104,7 @@ export default function Chat() {
     const aiMessage: Message = {
       role: "assistant",
       content: `I received a voice message. Here's what I understood: "${dummyTranscription}"`,
+      id: Date.now().toString(),
     };
     append(aiMessage);
 
@@ -205,7 +214,7 @@ export default function Chat() {
                       onClick={() =>
                         handleInputChange({
                           target: { value: suggestion.text },
-                        } as any)
+                        } as React.ChangeEvent<HTMLInputElement>)
                       }
                     >
                       {suggestion.emoji} {suggestion.text}
@@ -213,36 +222,40 @@ export default function Chat() {
                   ))}
                 </div>
                 <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee2">
-                  {[...suggestions, ...suggestions].map((suggestion, i) => (
-                    <Button
-                      key={i}
-                      variant="outline"
-                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
-                      onClick={() =>
-                        handleInputChange({
-                          target: { value: suggestion.text },
-                        } as any)
-                      }
-                    >
-                      {suggestion.emoji} {suggestion.text}
-                    </Button>
-                  ))}
+                  {[...additionalSuggestions, ...additionalSuggestions].map(
+                    (suggestion, i) => (
+                      <Button
+                        key={i}
+                        variant="outline"
+                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
+                        onClick={() =>
+                          handleInputChange({
+                            target: { value: suggestion.text },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                      >
+                        {suggestion.emoji} {suggestion.text}
+                      </Button>
+                    )
+                  )}
                 </div>
                 <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee3">
-                  {[...suggestions, ...suggestions].map((suggestion, i) => (
-                    <Button
-                      key={i}
-                      variant="outline"
-                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
-                      onClick={() =>
-                        handleInputChange({
-                          target: { value: suggestion.text },
-                        } as any)
-                      }
-                    >
-                      {suggestion.emoji} {suggestion.text}
-                    </Button>
-                  ))}
+                  {[...creativeSuggestions, ...creativeSuggestions].map(
+                    (suggestion, i) => (
+                      <Button
+                        key={i}
+                        variant="outline"
+                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
+                        onClick={() =>
+                          handleInputChange({
+                            target: { value: suggestion.text },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                      >
+                        {suggestion.emoji} {suggestion.text}
+                      </Button>
+                    )
+                  )}
                 </div>
               </div>
             </motion.div>

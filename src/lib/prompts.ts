@@ -15,3 +15,39 @@ export const suggestions = [
   { emoji: "🧠", text: "Memory improvement exercises" },
   { emoji: "🎸", text: "Learn a musical instrument" },
 ];
+
+export const additionalSuggestions = [
+  { emoji: "🏋️", text: "Home workout routines" },
+  { emoji: "🎬", text: "Must-watch movies" },
+  { emoji: "🎮", text: "Top video games" },
+  { emoji: "🍿", text: "Snack ideas for movie night" },
+  { emoji: "🧩", text: "Brain-teasing puzzles" },
+  { emoji: "🌸", text: "Gardening tips for beginners" },
+  { emoji: "✈️", text: "Travel destination guides" },
+  { emoji: "🖥️", text: "Remote work best practices" },
+  { emoji: "🎤", text: "Public speaking tips" },
+  { emoji: "🛠️", text: "DIY repair projects" },
+  { emoji: "📈", text: "Investment strategies" },
+  { emoji: "🧵", text: "Sewing and knitting patterns" },
+  { emoji: "🍷", text: "Wine tasting tips" },
+  { emoji: "🎧", text: "Podcast recommendations" },
+  { emoji: "📝", text: "Creative writing prompts" },
+];
+
+export const creativeSuggestions = [
+  { emoji: "🧙", text: "Fantasy world-building guide" },
+  { emoji: "🖌️", text: "Abstract painting techniques" },
+  { emoji: "🎭", text: "Improv acting exercises" },
+  { emoji: "📜", text: "Historical fiction writing tips" },
+  { emoji: "🎨", text: "Mixed media art projects" },
+  { emoji: "🎵", text: "Compose your own music" },
+  { emoji: "📸", text: "Creative photography ideas" },
+  { emoji: "🧩", text: "Design your own puzzle" },
+  { emoji: "🎬", text: "Short film production guide" },
+  { emoji: "🧵", text: "Create your own fashion line" },
+  { emoji: "📖", text: "Write a choose-your-own-adventure story" },
+  { emoji: "🎤", text: "Voice acting techniques" },
+  { emoji: "🖥️", text: "Digital art creation tips" },
+  { emoji: "🎭", text: "Costume design for theater" },
+  { emoji: "📚", text: "Curate a themed book collection" },
+];
