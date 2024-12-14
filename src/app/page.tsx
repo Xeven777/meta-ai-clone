@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat, Message } from "ai/react";
-import { Mic, Send, Play, Pause, X, PlusCircle } from "lucide-react";
+import { Play, Pause, X, PlusCircle, SendHorizonal, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
@@ -14,6 +14,7 @@ import {
 } from "@/lib/prompts";
 import Image from "next/image";
 import meta from "@/assets/Meta-ai-logo.png";
+import { AutosizeTextarea } from "@/components/ui/textarea";
 
 export default function Chat() {
   const {
@@ -212,7 +213,7 @@ export default function Chat() {
                     <Button
                       key={i}
                       variant="outline"
-                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-opacity-80"
+                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-gray-300/90"
                       onClick={() =>
                         handleInputChange({
                           target: { value: suggestion.text },
@@ -229,7 +230,7 @@ export default function Chat() {
                       <Button
                         key={i}
                         variant="outline"
-                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-opacity-80"
+                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-gray-300/90"
                         onClick={() =>
                           handleInputChange({
                             target: { value: suggestion.text },
@@ -247,7 +248,7 @@ export default function Chat() {
                       <Button
                         key={i}
                         variant="outline"
-                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-opacity-80"
+                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-gray-300/90"
                         onClick={() =>
                           handleInputChange({
                             target: { value: suggestion.text },
@@ -384,40 +385,37 @@ export default function Chat() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="p-4 border-t border-gray-800"
       >
-        <div className="relative flex items-center">
-          <input
+        <div className="relative flex items-end pb-4">
+          <AutosizeTextarea
             value={input}
             onChange={handleInputChange}
             placeholder="Message"
-            className="w-full rounded-full bg-gray-900 border border-gray-700 px-4 py-2 pr-20 focus:outline-none focus:border-blue-400"
+            minHeight={38}
+            maxHeight={100}
+            className="rounded-3xl pl-5 resize-none"
           />
-          <div className="absolute right-2 flex gap-2">
+          {input.length > 0 ? (
+            <Button
+              type="submit"
+              className="rounded-full bg-green-500 hover:bg-green-600 size-12 shrink-0"
+              disabled={isLoading}
+            >
+              <SendHorizonal size={24} className="translate-x-px" />
+            </Button>
+          ) : (
             <Button
               type="button"
-              size="icon"
-              variant="ghost"
-              className="h-8 w-8"
+              className="rounded-full bg-green-500 hover:bg-green-600 size-12 shrink-0"
               onClick={() => setRecording(!recording)}
               disabled={audioBlob !== null}
             >
               <Mic
-                className={cn(
-                  "h-4 w-4",
-                  recording && "text-red-500 animate-pulse"
-                )}
+                className={cn(recording && "text-red-500 animate-pulse")}
+                size={22}
               />
             </Button>
-            <Button
-              type="submit"
-              size="icon"
-              className="h-8 w-8"
-              disabled={isLoading}
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
+          )}
         </div>
       </motion.form>
     </div>
