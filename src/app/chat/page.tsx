@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { suggestions } from "@/lib/prompts";
-
+import Image from "next/image";
+import meta from "@/assets/Meta-ai-logo.png";
 export default function Chat() {
   const {
     messages,
@@ -121,7 +122,7 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
+    <div className="flex flex-col h-screen bg-gray-950/70 text-white max-w-2xl mx-auto rounded-2xl">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
@@ -130,26 +131,31 @@ export default function Chat() {
         className="flex items-center justify-between gap-3 p-4 border-b border-gray-800"
       >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-400" />
+          <Image
+            src={meta}
+            alt="meta ai logo"
+            width={36}
+            className="logo-shadow"
+          />
+
           <div>
-            <h1 className="font-semibold">AI Assistant</h1>
-            <p className="text-sm text-gray-400">with GPT-4</p>
+            <h1 className="font-semibold">Meta AI</h1>
+            <p className="text-sm text-gray-400">with Llama 3.3 ✨</p>
           </div>
         </div>
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8"
           onClick={() => {
-            /* Add new chat logic here */
+            window.location.reload();
           }}
         >
-          <PlusCircle className="h-5 w-5" />
+          <PlusCircle size={32} />
         </Button>
       </motion.header>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[url('/pattern.png')] bg-repeat">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         <AnimatePresence>
           {messages.length === 0 && (
             <motion.div
@@ -158,20 +164,76 @@ export default function Chat() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="flex flex-col items-center justify-center h-40 gap-4">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 animate-pulse" />
-                <h2 className="text-2xl font-bold">
-                  Ask AI Assistant anything
+              <div className="relative flex flex-col items-center justify-center mt-32 gap-4">
+                <Image
+                  src={meta}
+                  alt="meta ai logo"
+                  width={130}
+                  placeholder="blur"
+                  fetchPriority="high"
+                  loading="eager"
+                  className="meta-spin"
+                />
+                <Image
+                  src={meta}
+                  alt="meta ai logo"
+                  width={130}
+                  placeholder="blur"
+                  fetchPriority="low"
+                  loading="lazy"
+                  className="meta-spin absolute top-0 rotate-12 blur-xl opacity-70"
+                />
+
+                <h2 className="text-2xl md:text-4xl tracking-tight font-semibold word-spacing-4">
+                  Ask Meta AI anything
                 </h2>
               </div>
 
-              <div className="relative overflow-hidden w-full h-16 mt-4">
-                <div className="absolute whitespace-nowrap animate-marquee">
+              <div
+                className="relative overflow-clip w-full pb-6 mt-6 flex flex-col gap-4"
+                style={{
+                  maskImage:
+                    "linear-gradient(to left, transparent 0%, black 5%, black 95%, transparent 100%)",
+                }}
+              >
+                <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee">
                   {[...suggestions, ...suggestions].map((suggestion, i) => (
                     <Button
                       key={i}
                       variant="outline"
-                      className="bg-gray-900/50 border-gray-700 hover:bg-gray-800 mx-2"
+                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
+                      onClick={() =>
+                        handleInputChange({
+                          target: { value: suggestion.text },
+                        } as any)
+                      }
+                    >
+                      {suggestion.emoji} {suggestion.text}
+                    </Button>
+                  ))}
+                </div>
+                <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee2">
+                  {[...suggestions, ...suggestions].map((suggestion, i) => (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
+                      onClick={() =>
+                        handleInputChange({
+                          target: { value: suggestion.text },
+                        } as any)
+                      }
+                    >
+                      {suggestion.emoji} {suggestion.text}
+                    </Button>
+                  ))}
+                </div>
+                <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee3">
+                  {[...suggestions, ...suggestions].map((suggestion, i) => (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
                       onClick={() =>
                         handleInputChange({
                           target: { value: suggestion.text },
