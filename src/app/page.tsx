@@ -1,11 +1,12 @@
 "use client";
 
 import { useChat, Message } from "ai/react";
-import { Mic, Send, Loader2, Play, Pause, X, PlusCircle } from "lucide-react";
+import { Mic, Send, Play, Pause, X, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Markdown from "react-markdown";
 import {
   additionalSuggestions,
   creativeSuggestions,
@@ -150,7 +151,7 @@ export default function Chat() {
 
           <div>
             <h1 className="font-semibold">Meta AI</h1>
-            <p className="text-sm text-gray-400">with Llama 3.3 ✨</p>
+            <p className="text-sm text-muted-foreground">with Llama 3.3 ✨</p>
           </div>
         </div>
         <Button
@@ -211,7 +212,7 @@ export default function Chat() {
                     <Button
                       key={i}
                       variant="outline"
-                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
+                      className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-opacity-80"
                       onClick={() =>
                         handleInputChange({
                           target: { value: suggestion.text },
@@ -228,7 +229,7 @@ export default function Chat() {
                       <Button
                         key={i}
                         variant="outline"
-                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
+                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-opacity-80"
                         onClick={() =>
                           handleInputChange({
                             target: { value: suggestion.text },
@@ -246,7 +247,7 @@ export default function Chat() {
                       <Button
                         key={i}
                         variant="outline"
-                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40"
+                        className="rounded-full bg-gray-700/30 hover:bg-gray-700/40 text-opacity-80"
                         onClick={() =>
                           handleInputChange({
                             target: { value: suggestion.text },
@@ -270,34 +271,55 @@ export default function Chat() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className={cn(
-              "flex gap-3 max-w-xl",
-              message.role === "user" ? "ml-auto" : ""
+              "flex gap-2 max-w-xl",
+              message.role === "user" ? "w-fit ml-auto" : ""
             )}
           >
             {message.role !== "user" && (
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex-shrink-0" />
+              <Image
+                src={meta}
+                alt="meta ai logo"
+                width={30}
+                className="logo-shadow size-7"
+              />
             )}
             <div
               className={cn(
-                "rounded-2xl p-4",
-                message.role === "user" ? "bg-green-600" : "bg-gray-800"
+                "rounded-2xl px-5 py-3 prose",
+                message.role === "user"
+                  ? "bg-green-600 rounded-tr-none text-end"
+                  : "bg-gray-800 rounded-tl-none"
               )}
             >
-              <p>{message.content}</p>
+              <Markdown>{message.content}</Markdown>
+              <p
+                className={cn(
+                  "text-xs mt-2",
+                  message.role === "user"
+                    ? "text-gray-300 ml-auto text-end w-full"
+                    : "text-gray-500"
+                )}
+              >
+                {new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+              {isLoading &&
+                i === messages.length - 1 &&
+                message.role !== "user" && (
+                  <div className="flex items-center space-x-1 my-1">
+                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
+                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
+                    <div className="size-2 animate-bounce rounded-full bg-gray-400"></div>
+                  </div>
+                )}
             </div>
+            {message.role === "user" && (
+              <div className="size-7 bg-gradient-to-br to-green-600 from-cyan-500 via-emerald-500 rounded-full" />
+            )}
           </motion.div>
         ))}
-
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex items-center gap-2 text-gray-400"
-          >
-            <Loader2 className="h-4 w-4 animate-spin" />
-            <span>AI is thinking...</span>
-          </motion.div>
-        )}
       </div>
 
       {/* Recording animation */}
