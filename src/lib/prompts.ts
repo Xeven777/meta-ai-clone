@@ -1,4 +1,10 @@
 export const suggestions = [
+  { emoji: "🎸", text: "Learn a musical instrument" },
+  { emoji: "📷", text: "Find image of a scenic beach" },
+  {
+    emoji: "🏞️",
+    text: "generate AI image of a peaceful forest, with dragons and fantasy beatiful fairies, realistic 8k",
+  },
   { emoji: "👴", text: "Retirement savings guide" },
   { emoji: "💡", text: "5 energy-saving tips" },
   { emoji: "📱", text: "Tech gadget wishlist" },
@@ -13,16 +19,18 @@ export const suggestions = [
   { emoji: "💼", text: "Career development advice" },
   { emoji: "🌎", text: "Eco-friendly travel tips" },
   { emoji: "🧠", text: "Memory improvement exercises" },
-  { emoji: "🎸", text: "Learn a musical instrument" },
 ];
 
 export const additionalSuggestions = [
-  { emoji: "🏋️", text: "Home workout routines" },
+  { emoji: "🏋️", text: "Find image of a gym" },
   { emoji: "🎬", text: "Must-watch movies" },
+  { emoji: "📝", text: "Creative writing prompts" },
+  { emoji: "🌇", text: "Find images of city skylines at dusk" },
+  { emoji: "🎆", text: "Find image of a fireworks display" },
   { emoji: "🎮", text: "Top video games" },
   { emoji: "🍿", text: "Snack ideas for movie night" },
   { emoji: "🧩", text: "Brain-teasing puzzles" },
-  { emoji: "🌸", text: "Gardening tips for beginners" },
+  { emoji: "🌸", text: "Find images of rose" },
   { emoji: "✈️", text: "Travel destination guides" },
   { emoji: "🖥️", text: "Remote work best practices" },
   { emoji: "🎤", text: "Public speaking tips" },
@@ -31,20 +39,27 @@ export const additionalSuggestions = [
   { emoji: "🧵", text: "Sewing and knitting patterns" },
   { emoji: "🍷", text: "Wine tasting tips" },
   { emoji: "🎧", text: "Podcast recommendations" },
-  { emoji: "📝", text: "Creative writing prompts" },
 ];
 
 export const creativeSuggestions = [
+  {
+    emoji: "🖼️",
+    text: "Generate AI image of a futuristic robot companion",
+  },
+  {
+    emoji: "🌌",
+    text: "Generate AI image of a spaceship exploring the galaxy",
+  },
   { emoji: "🧙", text: "Fantasy world-building guide" },
   { emoji: "🖌️", text: "Abstract painting techniques" },
-  { emoji: "🎭", text: "Improv acting exercises" },
+  {
+    emoji: "✨",
+    text: "Generate AI image of a futuristic cityscape at night",
+  },
   { emoji: "📜", text: "Historical fiction writing tips" },
   { emoji: "🎨", text: "Mixed media art projects" },
   { emoji: "🎵", text: "Compose your own music" },
   { emoji: "📸", text: "Creative photography ideas" },
-  { emoji: "🧩", text: "Design your own puzzle" },
-  { emoji: "🎬", text: "Short film production guide" },
-  { emoji: "🧵", text: "Create your own fashion line" },
   { emoji: "📖", text: "Write a choose-your-own-adventure story" },
   { emoji: "🎤", text: "Voice acting techniques" },
   { emoji: "🖥️", text: "Digital art creation tips" },
