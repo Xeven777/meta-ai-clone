@@ -2,11 +2,13 @@ import { CoreMessage, streamText } from "ai";
 import { groq } from "@ai-sdk/groq";
 import { z } from "zod";
 
+export const maxDuration = 30;
+
 export async function POST(req: Request) {
   const { messages }: { messages: CoreMessage[] } = await req.json();
 
   const result = streamText({
-    model: groq("llama3-70b-8192"),
+    model: groq("llama3-groq-70b-8192-tool-use-preview"),
     system:
       "You are a helpful assistant. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet and get the weather for a location.",
     messages,

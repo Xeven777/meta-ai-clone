@@ -17,8 +17,10 @@ import {
 import Image from "next/image";
 import meta from "@/assets/Meta-ai-logo.png";
 import { AutosizeTextarea } from "@/components/ui/textarea";
+import bg from "@/assets/wap-bg.png";
 
 export default function Chat() {
+  const [imgUrl, setImgUrl] = useState<string | undefined>("");
   const {
     messages,
     input,
@@ -31,12 +33,15 @@ export default function Chat() {
 
     async onToolCall({ toolCall }) {
       if (toolCall.toolName === "generateAIImage") {
-        const { imgprompt } = toolCall.args;
+        const { imgprompt } = toolCall.args as { imgprompt: string };
+        console.log("imgprompt", imgprompt);
         const res = await fetch(
           "https://ai-image-api.xeven.workers.dev/img?model=flux-schnell&prompt=" +
             imgprompt
         );
-        
+        const imgResponse = await res.blob();
+        const imgUrl = URL.createObjectURL(imgResponse);
+        setImgUrl(imgUrl);
       }
     },
   });
@@ -163,7 +168,12 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-950/70 text-white max-w-2xl mx-auto rounded-2xl">
+    <div className="flex flex-col h-svh bg-gray-950/70 text-white max-w-2xl mx-auto rounded-2xl relative">
+      <Image
+        src={bg}
+        alt="whatsapp background"
+        className="absolute inset-0 z-0 border object-cover size-full opacity-5"
+      />
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
@@ -321,20 +331,46 @@ export default function Chat() {
                   : "bg-gray-800 rounded-tl-none"
               )}
             >
-              <Markdown
-                components={{
-                  img: ({ node, ...props }) => (
-                    <img
-                      alt="image"
-                      {...props}
-                      className="rounded-lg max-w-full h-auto my-2 hover:shadow-md"
-                      loading="lazy"
-                    />
-                  ),
-                }}
-              >
-                {message.content}
-              </Markdown>
+              {message.toolInvocations?.some(
+                (tool) => tool.toolName === "generateAIImage"
+              ) ? (
+                message.toolInvocations.map((toolInvocation) => (
+                  <div key={toolInvocation.toolCallId}>
+                    {imgUrl && (
+                      <img
+                        src={imgUrl}
+                        alt="AI Generated"
+                        className="max-w-full h-auto rounded-lg mt-2"
+                      />
+                    )}
+                  </div>
+                ))
+              ) : (
+                <Markdown
+                  components={{
+                    img: ({ node, ...props }) => (
+                      <img
+                        alt="image"
+                        {...props}
+                        className="rounded-lg max-w-full h-auto my-2 hover:shadow-md"
+                        loading="lazy"
+                      />
+                    ),
+                  }}
+                >
+                  {message.content}
+                </Markdown>
+              )}
+
+              {isLoading &&
+                i === messages.length - 1 &&
+                message.role !== "user" && (
+                  <div className="flex items-center space-x-1 my-1">
+                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
+                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
+                    <div className="size-2 animate-bounce rounded-full bg-gray-400"></div>
+                  </div>
+                )}
               <p
                 className={cn(
                   "text-[10px] mt-2",
@@ -348,26 +384,10 @@ export default function Chat() {
                   minute: "2-digit",
                 })}
               </p>
-              {isLoading &&
-                i === messages.length - 1 &&
-                message.role !== "user" && (
-                  <div className="flex items-center space-x-1 my-1">
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400"></div>
-                  </div>
-                )}
             </div>
             {message.role === "user" && (
               <div className="size-7 bg-gradient-to-br to-green-600 from-cyan-500 via-emerald-500 rounded-full" />
             )}
-            {message.toolInvocations?.map((tool, i) => {
-              return (
-                <div key={i} className="bg-gray-800 rounded-lg p-2">
-                  {tool.toolName}
-                </div>
-              );
-            })}
           </motion.div>
         ))}
       </div>
