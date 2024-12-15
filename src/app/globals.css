@@ -135,3 +135,20 @@
 .word-spacing-4 {
   word-spacing: 4px;
 }
+
+.markdown-body {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.markdown-body img {
+  background-color: transparent !important;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.dark .markdown-body {
+  color-scheme: dark;
+}
