@@ -53,6 +53,7 @@ export default function Chat() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioChunks = useRef<Blob[]>([]);
+  const messageContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     console.log("messages", messages);
   }, [messages]);
@@ -66,6 +67,13 @@ export default function Chat() {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [recording]);
+
+  useEffect(() => {
+    messageContainerRef.current?.scrollTo({
+      top: messageContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
 
   const startRecording = async () => {
     try {
@@ -206,7 +214,10 @@ export default function Chat() {
       </motion.header>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div
+        className="flex-1 overflow-y-auto p-4 space-y-4"
+        ref={messageContainerRef}
+      >
         <AnimatePresence>
           {messages.length === 0 && (
             <motion.div
@@ -223,7 +234,7 @@ export default function Chat() {
                   placeholder="blur"
                   fetchPriority="high"
                   loading="eager"
-                  className="meta-spin"
+                  className="meta-spin cursor-pointer"
                 />
                 <Image
                   src={meta}
@@ -232,7 +243,7 @@ export default function Chat() {
                   placeholder="blur"
                   fetchPriority="low"
                   loading="lazy"
-                  className="meta-spin absolute top-0 rotate-12 blur-xl opacity-70"
+                  className="meta-spin absolute top-0 rotate-12 blur-xl opacity-70 cursor-pointer"
                 />
 
                 <h2 className="text-2xl md:text-4xl tracking-tight font-semibold word-spacing-4">
