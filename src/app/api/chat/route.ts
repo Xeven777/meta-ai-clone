@@ -10,8 +10,9 @@ export async function POST(req: Request) {
   const result = streamText({
     model: groq("llama3-groq-70b-8192-tool-use-preview"),
     system:
-      "You are a helpful assistant. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet and get the weather for a location.",
+      "You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet and get the weather for a location.",
     messages,
+    maxTokens: 600,
     maxSteps: 4,
     tools: {
       getWeather: {
@@ -64,7 +65,7 @@ export async function POST(req: Request) {
             );
             const data = await response.json();
             return {
-              markdownResponse: `![${imgprompt}](${data.results[0].urls.small})`,
+              markdownResponse: `![${imgprompt}](${data.results[0].urls.regular})`,
             };
           } catch (error) {
             console.error(`Error generating image: ${error}`);
@@ -82,14 +83,6 @@ export async function POST(req: Request) {
           imgprompt: z.string().describe("Prompt to generate an image"),
         }),
       },
-    },
-    onFinish: async ({ toolCalls, text, toolResults, usage }) => {
-      console.log({
-        toolCalls,
-        text,
-        toolResults,
-        usage,
-      });
     },
   });
 

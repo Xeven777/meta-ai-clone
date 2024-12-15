@@ -172,14 +172,14 @@ export default function Chat() {
       <Image
         src={bg}
         alt="whatsapp background"
-        className="absolute inset-0 z-0 border object-cover size-full opacity-5"
+        className="absolute inset-0 -z-10 border object-cover size-full opacity-15"
       />
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex items-center justify-between gap-3 p-4 border-b border-gray-800"
+        className="flex items-center justify-between gap-3 p-4 border-b border-gray-800/60 rounded-b-md backdrop-blur"
       >
         <div className="flex items-center gap-3">
           <Image
@@ -215,7 +215,7 @@ export default function Chat() {
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="relative flex flex-col items-center justify-center mt-32 gap-4">
+              <div className="relative flex flex-col items-center justify-center mt-20 md:mt-32 gap-4">
                 <Image
                   src={meta}
                   alt="meta ai logo"
@@ -241,13 +241,13 @@ export default function Chat() {
               </div>
 
               <div
-                className="relative overflow-scroll w-full pb-6 mt-6 flex flex-col gap-4"
+                className="relative overflow-scroll w-full pb-6 mt-6 flex flex-col gap-3 md:gap-4"
                 style={{
                   maskImage:
                     "linear-gradient(to left, transparent 0%, black 5%, black 95%, transparent 100%)",
                 }}
               >
-                <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee">
+                <div className="whitespace-nowrap flex gap-2 md:gap-4 justify-center animate-marquee">
                   {[...suggestions, ...suggestions].map((suggestion, i) => (
                     <Button
                       key={i}
@@ -263,7 +263,7 @@ export default function Chat() {
                     </Button>
                   ))}
                 </div>
-                <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee2">
+                <div className="whitespace-nowrap flex gap-2 md:gap-4 justify-center animate-marquee2">
                   {[...additionalSuggestions, ...additionalSuggestions].map(
                     (suggestion, i) => (
                       <Button
@@ -281,7 +281,7 @@ export default function Chat() {
                     )
                   )}
                 </div>
-                <div className="whitespace-nowrap flex gap-4 justify-center animate-marquee3">
+                <div className="whitespace-nowrap flex gap-2 md:gap-4 justify-center animate-marquee3">
                   {[...creativeSuggestions, ...creativeSuggestions].map(
                     (suggestion, i) => (
                       <Button
@@ -304,92 +304,98 @@ export default function Chat() {
           )}
         </AnimatePresence>
 
-        {messages.map((message, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className={cn(
-              "flex gap-2 max-w-xl",
-              message.role === "user" ? "w-fit ml-auto" : ""
-            )}
-          >
-            {message.role !== "user" && (
-              <Image
-                src={meta}
-                alt="meta ai logo"
-                width={30}
-                className="logo-shadow size-7"
-              />
-            )}
-            <div
-              className={cn(
-                "rounded-lg px-3 py-1 break-words",
-                message.role === "user"
-                  ? "bg-green-600 rounded-tr-none"
-                  : "bg-gray-800 rounded-tl-none"
-              )}
-            >
-              {message.toolInvocations?.some(
+        {messages.map(
+          (message, i) =>
+            (message.content ||
+              message.toolInvocations?.some(
                 (tool) => tool.toolName === "generateAIImage"
-              ) ? (
-                message.toolInvocations.map((toolInvocation) => (
-                  <div key={toolInvocation.toolCallId}>
-                    {imgUrl && (
-                      <img
-                        src={imgUrl}
-                        alt="AI Generated"
-                        className="max-w-full h-auto rounded-lg mt-2"
-                      />
-                    )}
-                  </div>
-                ))
-              ) : (
-                <Markdown
-                  components={{
-                    img: ({ node, ...props }) => (
-                      <img
-                        alt="image"
-                        {...props}
-                        className="rounded-lg max-w-full h-auto my-2 hover:shadow-md"
-                        loading="lazy"
-                      />
-                    ),
-                  }}
-                >
-                  {message.content}
-                </Markdown>
-              )}
-
-              {isLoading &&
-                i === messages.length - 1 &&
-                message.role !== "user" && (
-                  <div className="flex items-center space-x-1 my-1">
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
-                    <div className="size-2 animate-bounce rounded-full bg-gray-400"></div>
-                  </div>
-                )}
-              <p
+              )) && (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
                 className={cn(
-                  "text-[10px] mt-2",
-                  message.role === "user"
-                    ? "text-gray-300 ml-auto text-end w-full"
-                    : "text-gray-500"
+                  "flex gap-1 md:gap-2 max-w-xl",
+                  message.role === "user" ? "w-fit ml-auto" : ""
                 )}
               >
-                {new Date().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
-            </div>
-            {message.role === "user" && (
-              <div className="size-7 bg-gradient-to-br to-green-600 from-cyan-500 via-emerald-500 rounded-full" />
-            )}
-          </motion.div>
-        ))}
+                {message.role !== "user" && (
+                  <Image
+                    src={meta}
+                    alt="meta ai logo"
+                    width={30}
+                    className="logo-shadow size-6 md:size-7"
+                  />
+                )}
+                <div
+                  className={cn(
+                    "rounded-xl px-3 py-1 break-words",
+                    message.role === "user"
+                      ? "bg-green-600 rounded-tr-none"
+                      : "bg-gray-800 rounded-tl-none"
+                  )}
+                >
+                  {message.toolInvocations?.some(
+                    (tool) => tool.toolName === "generateAIImage"
+                  ) ? (
+                    message.toolInvocations.map((toolInvocation) => (
+                      <div key={toolInvocation.toolCallId}>
+                        {imgUrl && (
+                          <img
+                            src={imgUrl}
+                            alt="AI Generated"
+                            className="max-w-full h-auto rounded-lg mt-2"
+                          />
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <Markdown
+                      components={{
+                        img: ({ node, ...props }) => (
+                          <img
+                            alt="image"
+                            {...props}
+                            className="rounded-lg max-w-full h-auto my-2 hover:shadow-md"
+                            loading="lazy"
+                          />
+                        ),
+                      }}
+                    >
+                      {message.content}
+                    </Markdown>
+                  )}
+
+                  {isLoading &&
+                    i === messages.length - 1 &&
+                    message.role !== "user" && (
+                      <div className="flex items-center space-x-1 my-1">
+                        <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
+                        <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
+                        <div className="size-2 animate-bounce rounded-full bg-gray-400"></div>
+                      </div>
+                    )}
+                  <p
+                    className={cn(
+                      "text-[10px] mt-0.5 md:mt-2",
+                      message.role === "user"
+                        ? "text-gray-300 ml-auto text-end w-full"
+                        : "text-gray-500"
+                    )}
+                  >
+                    {new Date().toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
+                {message.role === "user" && (
+                  <div className="size-7 bg-gradient-to-br to-green-600 from-cyan-500 via-emerald-500 rounded-full" />
+                )}
+              </motion.div>
+            )
+        )}
       </div>
 
       {/* Recording animation */}
