@@ -27,6 +27,7 @@ export default function Chat() {
     handleInputChange,
     handleSubmit,
     isLoading,
+    error,
     append,
   } = useChat({
     maxSteps: 4,
@@ -218,6 +219,15 @@ export default function Chat() {
         className="flex-1 overflow-y-auto p-4 space-y-4"
         ref={messageContainerRef}
       >
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-red-500"
+          >
+            <p className="text-sm font-medium">Error: {error.message}</p>
+          </motion.div>
+        )}
         <AnimatePresence>
           {messages.length === 0 && (
             <motion.div
@@ -363,6 +373,7 @@ export default function Chat() {
                     ))
                   ) : (
                     <Markdown
+                      className={"markdown-body"}
                       components={{
                         img: ({ node, ...props }) => (
                           <img

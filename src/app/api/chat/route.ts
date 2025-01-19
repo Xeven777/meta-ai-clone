@@ -8,12 +8,12 @@ export async function POST(req: Request) {
   const { messages }: { messages: CoreMessage[] } = await req.json();
 
   const result = streamText({
-    model: groq("llama3-groq-70b-8192-tool-use-preview"),
+    model: groq("llama-3.3-70b-versatile"),
     system:
-      "You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet and get the weather for a location.",
+      "You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet and get the weather for a location but only if asked. Otherwise , answer everythig else that you are asked!",
     messages,
-    maxTokens: 600,
-    maxSteps: 4,
+    maxTokens: 800,
+    maxSteps: 5,
     tools: {
       getWeather: {
         description: "Get the weather for a location",
@@ -82,6 +82,20 @@ export async function POST(req: Request) {
         parameters: z.object({
           imgprompt: z.string().describe("Prompt to generate an image"),
         }),
+        execute: async ({ imgprompt }) => {
+          try {
+            return {
+              success: true,
+              message: `Generated AI image for prompt: ${imgprompt}`,
+            };
+          } catch (error) {
+            console.error(`Error generating AI image: ${error}`);
+            return {
+              success: false,
+              error: "Failed to generate AI image",
+            };
+          }
+        },
       },
     },
   });
