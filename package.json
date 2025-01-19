@@ -11,6 +11,7 @@
   "dependencies": {
     "@ai-sdk/groq": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.1",
+    "@tavily/core": "^0.0.2",
     "ai": "^4.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -21,7 +22,6 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.3",
-    "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",

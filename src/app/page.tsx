@@ -3,6 +3,7 @@
 "use client";
 
 import { useChat, Message } from "ai/react";
+import remarkGfm from "remark-gfm";
 import { Play, Pause, X, PlusCircle, SendHorizonal, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -31,7 +32,7 @@ export default function Chat() {
     error,
     append,
   } = useChat({
-    maxSteps: 4,
+    maxSteps: 6,
 
     async onToolCall({ toolCall }) {
       if (toolCall.toolName === "generateAIImage") {
@@ -174,7 +175,7 @@ export default function Chat() {
     stopRecording();
     setAudioBlob(null);
     setRecordingTime(0);
-    audioChunks.current = []; // Reset audio chunks
+    audioChunks.current = [];
   };
 
   return (
@@ -208,7 +209,7 @@ export default function Chat() {
                   "Llama 3.3 🦙",
                   "Flux schnell ✨",
                   "Unsplash 🖼️",
-                  // "Tavily 🤖",
+                  "Tavily 🤖",
                 ]}
                 mainClassName="px-2"
                 staggerFrom={"last"}
@@ -394,7 +395,31 @@ export default function Chat() {
                   ) : (
                     <Markdown
                       className={"markdown-body"}
+                      remarkPlugins={[remarkGfm]}
                       components={{
+                        table: ({ node, ...props }) => (
+                          <div className="overflow-x-auto my-4">
+                            <table
+                              className="min-w-full divide-y divide-gray-700"
+                              {...props}
+                            />
+                          </div>
+                        ),
+                        th: ({ node, ...props }) => (
+                          <th className="px-4 py-2 bg-gray-800" {...props} />
+                        ),
+                        td: ({ node, ...props }) => (
+                          <td
+                            className="px-4 py-2 border-t border-gray-700"
+                            {...props}
+                          />
+                        ),
+                        code: ({ node, ...props }) => (
+                          <code
+                            className="block bg-gray-800 p-4 rounded-lg my-4"
+                            {...props}
+                          />
+                        ),
                         img: ({ node, ...props }) => (
                           <img
                             alt="image"

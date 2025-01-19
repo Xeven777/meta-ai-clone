@@ -1,6 +1,7 @@
 import { CoreMessage, streamText } from "ai";
 import { groq } from "@ai-sdk/groq";
 import { z } from "zod";
+import { tavily } from "@tavily/core";
 
 export const maxDuration = 30;
 
@@ -13,7 +14,7 @@ export async function POST(req: Request) {
       "You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet and get the weather for a location but only if asked. Otherwise , answer everythig else that you are asked!",
     messages,
     maxTokens: 800,
-    maxSteps: 5,
+    maxSteps: 6,
     tools: {
       getWeather: {
         description: "Get the weather for a location",
@@ -87,6 +88,32 @@ export async function POST(req: Request) {
             success: true,
             message: `Generated AI image for prompt: ${imgprompt}`,
           };
+        },
+      },
+      getLatestSearchResults: {
+        description: "Get the latest updates, search reults and news",
+        parameters: z.object({
+          topic: z
+            .string()
+            .describe("The topic to get the latest news/updates for"),
+        }),
+        execute: async ({ topic }) => {
+          const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
+          try {
+            const response = await tvly.searchQNA(topic, {
+              includeAnswer: true,
+              includeImages: false,
+              maxResults: 4,
+            });
+            console.log(response);
+            return response;
+          } catch (error) {
+            console.error(`Error getting news for ${topic}: ${error}`);
+            return {
+              success: false,
+              error: "Failed to fetch. Try again later",
+            };
+          }
         },
       },
     },
