@@ -153,3 +153,104 @@
 .dark .markdown-body {
   color-scheme: dark;
 }
+.markdown-body mark {
+  background-color: var(--accent);
+  border-radius: 4px;
+  padding: 0 4px;
+  color: rgb(var(--gray-dark));
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin: 0.5em 0 0.5rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: rgb(var(--white));
+}
+.markdown-body h1 {
+  font-size: 3em;
+}
+.markdown-body h2 {
+  font-size: 2.4em;
+}
+.markdown-body h3 {
+  font-size: 1.8em;
+}
+.markdown-body h4 {
+  font-size: 1.5em;
+}
+.markdown-body h5 {
+  font-size: 1.22em;
+}
+.markdown-body strong,
+.markdown-body b {
+  font-weight: 700;
+}
+.markdown-body a {
+  color: rgb(2, 195, 243);
+}
+.markdown-body a:hover {
+  color: rgb(25, 240, 255);
+  text-decoration: underline;
+}
+.markdown-body p {
+  margin-bottom: 1em;
+  opacity: 0.9;
+}
+.markdown-body textarea {
+  width: 100%;
+  font-size: 16px;
+}
+.markdown-body input {
+  font-size: 16px;
+}
+.markdown-body table {
+  width: 100%;
+}
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.markdown-body code {
+  font-family: "Space Mono", monospace;
+  padding: 2px 5px;
+  letter-spacing: -0.05em;
+  background-color: rgb(var(--gray-light));
+  color: rgb(var(--white-smoke), 0.8);
+  border-radius: 4px;
+}
+.markdown-body pre {
+  padding: 1.2em 0.7em;
+  border-radius: 8px;
+}
+.markdown-body pre > code {
+  all: unset;
+}
+.markdown-body blockquote {
+  border-left: 4px solid var(--accent);
+  padding: 0 0 0 20px;
+  margin: 0px;
+  font-size: 1.333em;
+}
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid rgb(var(--gray));
+}
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0.5em 0 0.5rem;
+  padding: 0 0 0 1.5em;
+}
+
+.markdown-body ul li {
+  list-style: disc;
+}
+
+.markdown-body ol li {
+  list-style: decimal;
+}
