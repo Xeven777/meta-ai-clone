@@ -18,6 +18,7 @@ import Image from "next/image";
 import meta from "@/assets/Meta-ai-logo.png";
 import { AutosizeTextarea } from "@/components/ui/textarea";
 import bg from "@/assets/wap-bg.png";
+import TextRotate from "@/components/fancy/text-rotate";
 
 export default function Chat() {
   const [imgUrl, setImgUrl] = useState<string | undefined>("");
@@ -200,7 +201,26 @@ export default function Chat() {
 
           <div>
             <h1 className="font-semibold">Meta AI</h1>
-            <p className="text-sm text-muted-foreground">with Llama 3.3 ✨</p>
+            <p className="text-sm text-muted-foreground inline-flex">
+              with
+              <TextRotate
+                texts={[
+                  "Llama 3.3 🦙",
+                  "Flux schnell ✨",
+                  "Unsplash 🖼️",
+                  // "Tavily 🤖",
+                ]}
+                mainClassName="px-2"
+                staggerFrom={"last"}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.025}
+                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                transition={{ type: "spring", damping: 20, stiffness: 200 }}
+                rotationInterval={2200}
+              />
+            </p>
           </div>
         </div>
         <Button

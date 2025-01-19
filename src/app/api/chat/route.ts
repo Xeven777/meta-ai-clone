@@ -83,18 +83,10 @@ export async function POST(req: Request) {
           imgprompt: z.string().describe("Prompt to generate an image"),
         }),
         execute: async ({ imgprompt }) => {
-          try {
-            return {
-              success: true,
-              message: `Generated AI image for prompt: ${imgprompt}`,
-            };
-          } catch (error) {
-            console.error(`Error generating AI image: ${error}`);
-            return {
-              success: false,
-              error: "Failed to generate AI image",
-            };
-          }
+          return {
+            success: true,
+            message: `Generated AI image for prompt: ${imgprompt}`,
+          };
         },
       },
     },
