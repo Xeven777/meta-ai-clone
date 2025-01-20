@@ -9,11 +9,14 @@ export async function POST(req: Request) {
   const { messages }: { messages: CoreMessage[] } = await req.json();
 
   const result = streamText({
-    model: groq("llama-3.3-70b-versatile"),
-    system:
-      "You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet, get the weather for a location and fetch latest new or updates about a given topic ,but only if asked. Otherwise , answer everythig else that you are asked!",
+    model: groq("mixtral-8x7b-32768"),
+    system: `You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet, get the weather for a location and fetch latest new or updates about a given topic ,but only if asked. Otherwise , answer everythig else that you are asked!
+    
+    keep in mind:
+    - After finding the image and getting its URL, send the response to the user with the image in format: ![image](url)
+    `,
     messages,
-    maxTokens: 800,
+    maxTokens: 840,
     maxSteps: 6,
     tools: {
       getWeather: {
@@ -66,7 +69,8 @@ export async function POST(req: Request) {
             );
             const data = await response.json();
             return {
-              markdownResponse: `![${imgprompt}](${data.results[0].urls.regular})`,
+              // markdownResponse: `Here is the image : ![${imgprompt}](${data.results[0].urls.regular})`,
+              imageUrl: data.results[0].urls.regular,
             };
           } catch (error) {
             console.error(`Error generating image: ${error}`);

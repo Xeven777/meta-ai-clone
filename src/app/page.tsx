@@ -445,7 +445,7 @@ export default function Chat() {
                     )}
                   <p
                     className={cn(
-                      "text-[10px] mt-0.5 md:mt-2",
+                      "text-[10px] -mt-1.5",
                       message.role === "user"
                         ? "text-gray-300 ml-auto text-end w-full"
                         : "text-gray-500"
