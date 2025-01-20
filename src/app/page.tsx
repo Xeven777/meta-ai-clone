@@ -209,6 +209,7 @@ export default function Chat() {
                   "Llama 3.3 🦙",
                   "Flux schnell ✨",
                   "Unsplash 🖼️",
+                  "Gemini 🪐",
                   "Tavily 🤖",
                 ]}
                 mainClassName="px-2"
