@@ -1,10 +1,10 @@
-# Meta AI Clone 🤖 ( but more features )
+# Meta AI Clone 🤖 ( but on steroids )
 
 A modern, feature-rich AI chat interface inspired by Meta's AI assistant, built with Next.js and cutting-edge AI technologies.
 
 ## ✨ Features
 
-- 🗣️ Identical chat interface with AI responses
+- 🗣️ Smooth chat interface with AI responses
 - 🖼️ AI image generation capabilities
 - 🌡️ Weather information retrieval
 - 🔍 Web search integration with Tavily
@@ -23,8 +23,9 @@ A modern, feature-rich AI chat interface inspired by Meta's AI assistant, built 
   - Lucide Icons
   - Framer Motion
 - **AI & APIs**:
-  - Groq AI SDK
-  - Llama 3.3 Model
+  - Vercel AI SDK
+  - Llama 3.3 Model from cerebras
+  - Gemini 2 Flash from google
   - Unsplash API
   - Tavily API
   - OpenMeteo Weather API
@@ -47,9 +48,10 @@ bun install
 3. Set up environment variables
 
 ```bash
-GROQ_API_KEY=""
 UNSPLASH_ACCESS_KEY=""
 TAVILY_API_KEY=""
+GOOGLE_GENERATIVE_AI_API_KEY=""
+CEREBRAS_API_KEY=""
 ```
 
 4. Run the development server

@@ -1,5 +1,6 @@
 import { CoreMessage, streamText } from "ai";
-import { groq } from "@ai-sdk/groq";
+// import { cerebras } from "@ai-sdk/cerebras";
+import { google } from "@ai-sdk/google";
 import { z } from "zod";
 import { tavily } from "@tavily/core";
 
@@ -9,11 +10,14 @@ export async function POST(req: Request) {
   const { messages }: { messages: CoreMessage[] } = await req.json();
 
   const result = streamText({
-    model: groq("mixtral-8x7b-32768"),
+    model: google("gemini-2.0-flash-exp", {
+      useSearchGrounding: true,
+    }),
+    // model: cerebras("llama-3.3-70b"),
     system: `You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet, get the weather for a location and fetch latest new or updates about a given topic ,but only if asked. Otherwise , answer everythig else that you are asked!
     
     keep in mind:
-    - After finding the image and getting its URL, send the response to the user with the image in format: ![image](url)
+    - if user askes to find image, after finding the image and getting its URL, send the response to the user with the image in md format: ![image](url)
     `,
     messages,
     maxTokens: 840,
