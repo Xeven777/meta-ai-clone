@@ -37,7 +37,7 @@ export default function Chat() {
     async onToolCall({ toolCall }) {
       if (toolCall.toolName === "generateAIImage") {
         const { imgprompt } = toolCall.args as { imgprompt: string };
-        console.log("imgprompt", imgprompt);
+        // console.log("imgprompt", imgprompt);
         const res = await fetch(
           "https://ai-image-api.xeven.workers.dev/img?model=flux-schnell&prompt=" +
             imgprompt
@@ -57,9 +57,9 @@ export default function Chat() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioChunks = useRef<Blob[]>([]);
   const messageContainerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    console.log("messages", messages);
-  }, [messages]);
+  // useEffect(() => {
+  //   console.log("messages", messages);
+  // }, [messages]);
   useEffect(() => {
     if (recording) {
       startRecording();
@@ -202,7 +202,7 @@ export default function Chat() {
 
           <div>
             <h1 className="font-semibold">Meta AI</h1>
-            <p className="text-sm text-muted-foreground inline-flex">
+            <div className="text-sm text-muted-foreground inline-flex">
               with
               <TextRotate
                 texts={[
@@ -222,7 +222,7 @@ export default function Chat() {
                 transition={{ type: "spring", damping: 20, stiffness: 200 }}
                 rotationInterval={2200}
               />
-            </p>
+            </div>
           </div>
         </div>
         <Button
