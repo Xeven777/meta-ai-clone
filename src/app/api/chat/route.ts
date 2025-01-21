@@ -1,4 +1,4 @@
-import { CoreMessage, streamText } from "ai";
+import { CoreMessage, smoothStream, streamText } from "ai";
 // import { cerebras } from "@ai-sdk/cerebras";
 import { google } from "@ai-sdk/google";
 import { z } from "zod";
@@ -36,15 +36,28 @@ export async function POST(req: Request) {
             const longitude = data[0].lon;
 
             const weatherResponse = await fetch(
-              `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&timezone=auto`
+              `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,precipitation&timezone=auto`
             );
             const weatherData = await weatherResponse.json();
 
             const temperature = weatherData.current.temperature_2m;
+            const apparentTemperature =
+              weatherData.current.apparent_temperature;
+            const precipitation = weatherData.current.precipitation;
+            const weatherCode = weatherData.current.weather_code;
 
+            console.log({
+              temperature,
+              apparentTemperature,
+              precipitation,
+              weatherCode,
+            });
             return {
               temperature,
               city,
+              apparentTemperature,
+              precipitation,
+              weatherCode,
             };
           } catch (error) {
             console.error(`Error getting weather for ${city}: ${error}`);
@@ -123,6 +136,10 @@ export async function POST(req: Request) {
         },
       },
     },
+    // @ts-expect-error ok i guess
+    experimental_transform: smoothStream({
+      chunking: "word",
+    }),
   });
 
   return result.toDataStreamResponse();

@@ -9,7 +9,7 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Meta AI (but much better) 🚀",
   description:
-    "Advanced Meta AI with faster responses, realtime weather updates, AI image generation and internet image search, realtime new fetch!🔥🦙",
+    "Advanced Meta AI with faster responses, realtime weather updates, AI image generation and internet image search, realtime news fetch!🔥🦙",
   authors: [
     {
       name: "Anish",
