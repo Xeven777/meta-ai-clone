@@ -37,7 +37,7 @@ export default function Chat() {
     async onToolCall({ toolCall }) {
       if (toolCall.toolName === "generateAIImage") {
         const { imgprompt } = toolCall.args as { imgprompt: string };
-        // console.log("imgprompt", imgprompt);
+       
         const res = await fetch(
           "https://ai-image-api.xeven.workers.dev/img?model=flux-schnell&prompt=" +
             imgprompt
@@ -57,9 +57,7 @@ export default function Chat() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioChunks = useRef<Blob[]>([]);
   const messageContainerRef = useRef<HTMLDivElement>(null);
-  // useEffect(() => {
-  //   console.log("messages", messages);
-  // }, [messages]);
+  
   useEffect(() => {
     if (recording) {
       startRecording();

@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: CoreMessage[] } = await req.json();
 
   const result = streamText({
-    model: google("gemini-2.0-flash-exp"),
+    model: google("gemini-2.0-flash-exp"), // use either gemini or cerebras
     // model: cerebras("llama-3.3-70b"),
     system: `You are a helpful assistant named Meta. You are made by Anish. You can answer everything that is being asked. and other than those, You can also generate images, find and get images from internet, get the weather for a location and fetch latest new or updates about a given topic ,but only if asked. Otherwise , answer everythig else that you are asked! Add emojis to make the conversation more fun! 🚀🔥🦙
     
